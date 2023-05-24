@@ -1,29 +1,38 @@
 import path from 'path'
 import { fileURLToPath } from 'url'
+import webpack from 'webpack'
+
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 const isProduction =  'production'
 
 const config = {
-    entry: './src/employees.jsx',
+    entry: {
+        employees: './src/employees.jsx'
+    },
     output: {
-        filename: 'employees.bundle.js',
+        filename: '[name].bundle.js',
         path: path.resolve(__dirname,'public'),
     
     },
-    plugins: [
-        //ADD ANY WEBPACK PLUGIN HERE
-    ],
     module:  {
         rules: [
             {
                 test: /\.jsx?$/,
+                exclude: /node_modules/,
                 loader: 'babel-loader'
 
             },
         ],
     },
+    optimization: {
+        splitChunks: {
+            name: 'vendor',
+            chunks: 'all',
+        },
+    },
+    devtool: 'source-map'
 
 }
 
